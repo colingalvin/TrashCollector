@@ -20,25 +20,19 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.Address.StreetAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AccountBalance)
+                @Html.DisplayNameFor(model => model.Address.AddressCity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SpecialPickupStatus)
+                @Html.DisplayNameFor(model => model.Address.AddressState)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SuspendStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SuspendEndDate)
+                @Html.DisplayNameFor(model => model.Address.AddressZip)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RegularPickupDay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalPickupDate)
             </th>
             <th></th>
         </tr>
@@ -53,25 +47,19 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address.AddressId)
+                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountBalance)
+                @Html.DisplayFor(modelItem => item.Address.AddressCity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SpecialPickupStatus)
+                @Html.DisplayFor(modelItem => item.Address.AddressState)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SuspendStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SuspendEndDate)
+                @Html.DisplayFor(modelItem => item.Address.AddressZip)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RegularPickupDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdditionalPickupDate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |

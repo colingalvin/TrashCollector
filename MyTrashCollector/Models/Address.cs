@@ -10,10 +10,8 @@ namespace MyTrashCollector.Models
     {
         [Key]
         public int AddressId { get; set; }
-        [Display(Name = "Street Number")]
-        public int StreetNumber { get; set; }
-        [Display(Name = "Street Name")]
-        public string StreetName { get; set; }
+        [Display(Name = "Street Address")]
+        public string StreetAddress { get; set; }
         [Display(Name = "City")]
         public string AddressCity { get; set; }
         [Display(Name = "State")]
