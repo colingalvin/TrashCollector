@@ -25,7 +25,9 @@ namespace MyTrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.Address);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            var applicationDbContext = _context.Customers.Where(c => c.IdentityUserId == userId).Include(c => c.Address);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -64,6 +66,8 @@ namespace MyTrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                customer.IdentityUserId = userId;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -203,6 +207,7 @@ namespace MyTrashCollector.Controllers
             {
                 try
                 {
+                    customer.SpecialPickupStatus = true;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
@@ -261,6 +266,7 @@ namespace MyTrashCollector.Controllers
             {
                 try
                 {
+                    customer.SpecialPickupStatus = true;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }

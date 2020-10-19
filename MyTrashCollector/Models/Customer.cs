@@ -12,27 +12,37 @@ namespace MyTrashCollector.Models
     {
         [Key]
         public int CustomerId { get; set; }
+
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
         [ForeignKey("Address")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
+
         [Display(Name = "Account Balance")]
         public double AccountBalance { get; set; }
+
         public bool SpecialPickupStatus { get; set; }
+
         [Display(Name = "Start Date for Suspend Service")]
         [DataType(DataType.Date)]
         public DateTime SuspendStartDate { get; set; }
+
         [Display(Name = "End Date for Suspend Service")]
         [DataType(DataType.Date)]
         public DateTime SuspendEndDate { get; set; }
+
         [Display(Name = "Regular Pickup Day")]
         public string RegularPickupDay { get; set; }
+
         [Display(Name = "Additional Pickup Date")]
         [DataType(DataType.Date)]
         public DateTime AdditionalPickupDate { get; set; }
+
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
