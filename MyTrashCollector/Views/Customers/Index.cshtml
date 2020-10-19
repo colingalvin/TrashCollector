@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<MyTrashCollector.Models.Customer>
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registered Addresses";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Account Overview</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<h3>Current Addresses</h3>
+
 <table class="table">
     <thead>
         <tr>
@@ -70,3 +70,7 @@
 }
     </tbody>
 </table>
+
+<p>
+    <a asp-action="Create">Add New Address</a>
+</p>

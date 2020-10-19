@@ -45,5 +45,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="AddPickup" asp-route-id="@Model.CustomerId">Request Additional Pickup</a> |
+    <a asp-action="SuspendService" asp-route-id="@Model.CustomerId">Schedule Suspension of Service</a> |
+    <a asp-action="Index">Account Overview</a>
 </div>
