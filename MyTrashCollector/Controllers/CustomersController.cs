@@ -80,7 +80,12 @@ namespace MyTrashCollector.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers
+                .Include(c => c.Address)
+                .FirstOrDefaultAsync(m => m.CustomerId == id);
+
+            // var customer = await _context.Customers.FindAsync(id);
+
             if (customer == null)
             {
                 return NotFound();

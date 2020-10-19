@@ -25,39 +25,29 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AddressId" class="control-label"></label>
-                <select asp-for="AddressId" class="form-control" asp-items="ViewBag.AddressId"></select>
-                <span asp-validation-for="AddressId" class="text-danger"></span>
+                <label asp-for="Address.StreetAddress" class="control-label"></label>
+                <input asp-for="Address.StreetAddress" class="form-control" />
+                <span asp-validation-for="Address.StreetAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccountBalance" class="control-label"></label>
-                <input asp-for="AccountBalance" class="form-control" />
-                <span asp-validation-for="AccountBalance" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="SpecialPickupStatus" /> @Html.DisplayNameFor(model => model.SpecialPickupStatus)
-                </label>
+                <label asp-for="Address.AddressCity" class="control-label"></label>
+                <input asp-for="Address.AddressCity" class="form-control" />
+                <span asp-validation-for="Address.AddressCity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SuspendStartDate" class="control-label"></label>
-                <input asp-for="SuspendStartDate" class="form-control" />
-                <span asp-validation-for="SuspendStartDate" class="text-danger"></span>
+                <label asp-for="Address.AddressState" class="control-label"></label>
+                <input asp-for="Address.AddressState" class="form-control"  />
+                <span asp-validation-for="Address.AddressState" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SuspendEndDate" class="control-label"></label>
-                <input asp-for="SuspendEndDate" class="form-control" />
-                <span asp-validation-for="SuspendEndDate" class="text-danger"></span>
+                <label asp-for="Address.AddressZip" class="control-label"></label>
+                <input asp-for="Address.AddressZip" class="form-control"  />
+                <span asp-validation-for="Address.AddressZip" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RegularPickupDay" class="control-label"></label>
                 <input asp-for="RegularPickupDay" class="form-control" />
                 <span asp-validation-for="RegularPickupDay" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdditionalPickupDate" class="control-label"></label>
-                <input asp-for="AdditionalPickupDate" class="form-control" />
-                <span asp-validation-for="AdditionalPickupDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
