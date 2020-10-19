@@ -23,12 +23,15 @@ namespace MyTrashCollector.Models
         public double AccountBalance { get; set; }
         public bool SpecialPickupStatus { get; set; }
         [Display(Name = "Start Date for Suspend Service")]
+        [DataType(DataType.Date)]
         public DateTime SuspendStartDate { get; set; }
         [Display(Name = "End Date for Suspend Service")]
+        [DataType(DataType.Date)]
         public DateTime SuspendEndDate { get; set; }
         [Display(Name = "Regular Pickup Day")]
         public string RegularPickupDay { get; set; }
         [Display(Name = "Additional Pickup Date")]
+        [DataType(DataType.Date)]
         public DateTime AdditionalPickupDate { get; set; }
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

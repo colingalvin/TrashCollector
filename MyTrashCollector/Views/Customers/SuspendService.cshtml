@@ -5,40 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Suspend Service</h1>
+<h1>Schedule Suspension of Service</h1>
 
-<h4>Customer</h4>
+<h4>Enter Start and End Dates Below</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SuspendService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CustomerId" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressId" class="control-label"></label>
-                <select asp-for="AddressId" class="form-control" asp-items="ViewBag.AddressId"></select>
-                <span asp-validation-for="AddressId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccountBalance" class="control-label"></label>
-                <input asp-for="AccountBalance" class="form-control" />
-                <span asp-validation-for="AccountBalance" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="SpecialPickupStatus" /> @Html.DisplayNameFor(model => model.SpecialPickupStatus)
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="SuspendStartDate" class="control-label"></label>
                 <input asp-for="SuspendStartDate" class="form-control" />
@@ -48,21 +22,6 @@
                 <label asp-for="SuspendEndDate" class="control-label"></label>
                 <input asp-for="SuspendEndDate" class="form-control" />
                 <span asp-validation-for="SuspendEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegularPickupDay" class="control-label"></label>
-                <input asp-for="RegularPickupDay" class="form-control" />
-                <span asp-validation-for="RegularPickupDay" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdditionalPickupDate" class="control-label"></label>
-                <input asp-for="AdditionalPickupDate" class="form-control" />
-                <span asp-validation-for="AdditionalPickupDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdentityUserId" class="control-label"></label>
-                <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
-                <span asp-validation-for="IdentityUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
