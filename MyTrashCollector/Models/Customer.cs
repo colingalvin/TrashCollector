@@ -24,6 +24,7 @@ namespace MyTrashCollector.Models
         public Address Address { get; set; }
 
         [Display(Name = "Account Balance")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public double AccountBalance { get; set; }
 
         [Display(Name = "Special Pickup?")]
@@ -31,18 +32,18 @@ namespace MyTrashCollector.Models
 
         [Display(Name = "Start Date for Suspend Service")]
         [DataType(DataType.Date)]
-        public DateTime SuspendStartDate { get; set; }
+        public DateTime? SuspendStartDate { get; set; }
 
         [Display(Name = "End Date for Suspend Service")]
         [DataType(DataType.Date)]
-        public DateTime SuspendEndDate { get; set; }
+        public DateTime? SuspendEndDate { get; set; }
 
         [Display(Name = "Regular Pickup Day")]
         public string RegularPickupDay { get; set; }
 
         [Display(Name = "Additional Pickup Date")]
         [DataType(DataType.Date)]
-        public DateTime AdditionalPickupDate { get; set; }
+        public DateTime? AdditionalPickupDate { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
