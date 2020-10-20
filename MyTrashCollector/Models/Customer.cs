@@ -26,6 +26,7 @@ namespace MyTrashCollector.Models
         [Display(Name = "Account Balance")]
         public double AccountBalance { get; set; }
 
+        [Display(Name = "Special Pickup?")]
         public bool SpecialPickupStatus { get; set; }
 
         [Display(Name = "Start Date for Suspend Service")]

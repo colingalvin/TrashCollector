@@ -7,12 +7,21 @@
 
 <h1>Schedule Suspension of Service</h1>
 
-<h4>Enter Start and End Dates Below</h4>
+<h4>Enter Start and End Dates Below for INSERT ADDRESS HERE</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SuspendService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CustomerId" />
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="LastName" />
+            <input type="hidden" asp-for="AddressId" />
+            <input type="hidden" asp-for="AccountBalance" />
+            <input type="hidden" asp-for="SpecialPickupStatus" />
+            <input type="hidden" asp-for="RegularPickupDay" />
+            <input type="hidden" asp-for="AdditionalPickupDate" />
+            <input type="hidden" asp-for="IdentityUserId" />
             <div class="form-group">
                 <label asp-for="SuspendStartDate" class="control-label"></label>
                 <input asp-for="SuspendStartDate" class="form-control" />

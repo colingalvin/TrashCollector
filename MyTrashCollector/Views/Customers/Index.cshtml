@@ -34,6 +34,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.RegularPickupDay)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialPickupStatus)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -62,9 +65,15 @@
                 @Html.DisplayFor(modelItem => item.RegularPickupDay)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
+                @Html.DisplayFor(modelItem => item.SpecialPickupStatus)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.CustomerId">View Account Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit Address and Pickup Day</a> |
+                <a asp-action="AddPickup" asp-route-id="@item.CustomerId">Request Additional Pickup</a> |
+                <a asp-action="SuspendService" asp-route-id="@item.CustomerId">Schedule Suspension of Service</a> |
                 <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                <a asp-action="Index">Account Overview</a>
             </td>
         </tr>
 }
