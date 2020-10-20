@@ -1,85 +1,51 @@
-﻿@model IEnumerable<MyTrashCollector.Models.Customer>
+﻿@model MyTrashCollector.Models.Customer
 
 @{
-    ViewData["Title"] = "Registered Addresses";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Account Overview</h1>
+<h1>Details</h1>
 
-
-<h3>Current Addresses</h3>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.StreetAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.AddressCity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.AddressState)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.AddressZip)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegularPickupDay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecialPickupStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.AddressCity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.AddressState)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.AddressZip)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegularPickupDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecialPickupStatus)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.CustomerId">View Account Details</a> |
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit Address and Pickup Day</a> |
-                <a asp-action="AddPickup" asp-route-id="@item.CustomerId">Request Additional Pickup</a> |
-                <a asp-action="SuspendService" asp-route-id="@item.CustomerId">Schedule Suspension of Service</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
-                <a asp-action="Index">Account Overview</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
-<p>
-    <a asp-action="Create">Add New Address</a>
-</p>
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address.StreetAddress) 
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountBalance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AccountBalance)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RegularPickupDay)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RegularPickupDay)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit</a> |
+    <a asp-action="AddPickup" asp-route-id="@Model.CustomerId">Request Additional Pickup</a> |
+    <a asp-action="SuspendService" asp-route-id="@Model.CustomerId">Schedule Suspension of Service</a> |
+    <a asp-action="Index">Account Overview</a>
+</div>

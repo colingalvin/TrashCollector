@@ -26,9 +26,12 @@ namespace MyTrashCollector.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
-            var applicationDbContext = await _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).ToListAsync();
-            return View(applicationDbContext);
+            var loggedInCustomer = _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            if(loggedInCustomer == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(loggedInCustomer);
         }
 
         // GET: Customers/Details/5
@@ -64,16 +67,11 @@ namespace MyTrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Customer customer)
         {
-            if (ModelState.IsValid)
-            {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                customer.IdentityUserId = userId;
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "AddressId", customer.AddressId);
-            return View(customer);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            customer.IdentityUserId = userId;
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Customers/Edit/5

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTrashCollector.Data;
 
 namespace MyTrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201020153634_Add Identity User to Employee Model.")]
+    partial class AddIdentityUsertoEmployeeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace MyTrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8fdeeca-97f3-4fec-a3d3-5c724bd6105d",
-                            ConcurrencyStamp = "e7309b2f-a9a2-42af-b0f2-ec63f0ed33f4",
+                            Id = "3b6fa2a6-5783-41b5-9612-c4390bb3b1d5",
+                            ConcurrencyStamp = "b6d5ee5b-7a62-4678-9f87-9cb198ca652c",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "c9597778-672a-4c21-a0c0-fba5fc764a23",
-                            ConcurrencyStamp = "9b8316fe-2198-4b48-b2ca-888891fde7ee",
+                            Id = "0dae36d3-5bf0-4496-b7af-1116293fcd94",
+                            ConcurrencyStamp = "c009529f-9ae5-4c31-96e0-167f828d89ca",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
