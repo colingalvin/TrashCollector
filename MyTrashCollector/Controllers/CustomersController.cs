@@ -27,8 +27,8 @@ namespace MyTrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
-            var applicationDbContext = _context.Customers.Where(c => c.IdentityUserId == userId).Include(c => c.Address);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).ToListAsync();
+            return View(applicationDbContext);
         }
 
         // GET: Customers/Details/5
@@ -88,7 +88,7 @@ namespace MyTrashCollector.Controllers
                 .Include(c => c.Address)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
 
-            // var customer = await _context.Customers.FindAsync(id);
+            //var customer = await _context.Customers.FindAsync(id);
 
             if (customer == null)
             {

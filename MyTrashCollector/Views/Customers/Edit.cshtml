@@ -14,6 +14,14 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CustomerId" />
+            <input type="hidden" asp-for="AddressId" />
+            <input type="hidden" asp-for="AccountBalance" />
+            <input type="hidden" asp-for="SpecialPickupStatus" />
+            <input type="hidden" asp-for="SuspendStartDate" />
+            <input type="hidden" asp-for="SuspendEndDate" />
+            <input type="hidden" asp-for="AdditionalPickupDate" />
+            <input type="hidden" asp-for="IdentityUserId" />
+            <input type="hidden" asp-for="Address.AddressId" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -36,12 +44,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Address.AddressState" class="control-label"></label>
-                <input asp-for="Address.AddressState" class="form-control"  />
+                <input asp-for="Address.AddressState" class="form-control" />
                 <span asp-validation-for="Address.AddressState" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address.AddressZip" class="control-label"></label>
-                <input asp-for="Address.AddressZip" class="form-control"  />
+                <input asp-for="Address.AddressZip" class="form-control" />
                 <span asp-validation-for="Address.AddressZip" class="text-danger"></span>
             </div>
             <div class="form-group">
