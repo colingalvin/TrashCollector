@@ -32,7 +32,8 @@ namespace MyTrashCollector.Controllers
             {
                 return RedirectToAction("Create");
             }
-            return View(loggedInEmployee);
+            var customers = GetDailyCustomers(loggedInEmployee);
+            return View("ViewCustomers", customers);
         }
 
         // GET: Employees/Details/5
@@ -53,82 +54,28 @@ namespace MyTrashCollector.Controllers
             
             var customers = _context.Customers.Where(c => c.Address.AddressZip == employee.ZipCodeOfResponsibility).ToList();
 
-            return View(customers);
+            return View("ViewCustomers", customers);
         }
 
-        public async Task<IActionResult> ViewDailyCustomers(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> ViewDailyCustomers(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+        //    var employee = await _context.Employees
+        //        .FirstOrDefaultAsync(m => m.EmployeeId == id);
 
-            if (employee == null)
-            {
-                return NotFound();
-            }
+        //    if (employee == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var customers = GetDailyCustomers(employee);
+        //    var customers = GetDailyCustomers(employee);
 
-            return View(customers);
-        }
-
-        private List<Customer> GetDailyCustomers(Employee employee)
-        {
-            var customers = GetRegularCustomers(employee);
-            customers = CheckSpecialRequests(customers);
-            return customers;
-        }
-
-        private List<Customer> GetRegularCustomers(Employee employee)
-        {
-            List<Customer> customers = new List<Customer>();
-            foreach (Customer customer in _context.Customers.Include(c => c.Address))
-            {
-                if (customer.Address.AddressZip == employee.ZipCodeOfResponsibility && customer.RegularPickupDay == DateTime.Now.DayOfWeek.ToString())
-                {
-                    customers.Add(customer);
-                }
-            }
-            return customers;
-        }
-
-        private List<Customer> CheckSpecialRequests(List<Customer> customers)
-        {
-            customers = SpecialPickupScheduledToday(customers);
-            customers = CheckForSuspendedService(customers);
-            return customers;
-        }
-
-        private List<Customer> SpecialPickupScheduledToday(List<Customer> customers)
-        {
-            foreach (Customer customer in _context.Customers)
-            {
-                if (customer.SpecialPickupStatus == true)
-                {
-                    if (customer.AdditionalPickupDate.Equals(DateTime.Now.Date))
-                    {
-                        customers.Add(customer);
-                    }
-                }
-            }
-            return customers;
-        }
-
-        private List<Customer> CheckForSuspendedService(List<Customer> customers)
-        {
-            foreach(Customer customer in customers)
-            {
-                if(customer.SuspendStartDate?.CompareTo(DateTime.Now.Date) <= 0 && customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) > 0)
-                {
-                    customers.Remove(customer);
-                }
-            }
-            return customers;
-        }
+        //    return View("ViewCustomers", customers);
+        //}
 
         // GET: Employees/Create
         public IActionResult Create()
@@ -237,6 +184,60 @@ namespace MyTrashCollector.Controllers
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.EmployeeId == id);
+        }
+
+        private List<Customer> GetDailyCustomers(Employee employee)
+        {
+            var customers = GetRegularCustomers(employee);
+            customers = CheckSpecialRequests(customers);
+            return customers;
+        }
+
+        private List<Customer> GetRegularCustomers(Employee employee)
+        {
+            List<Customer> customers = new List<Customer>();
+            foreach (Customer customer in _context.Customers.Include(c => c.Address))
+            {
+                if (customer.Address.AddressZip == employee.ZipCodeOfResponsibility && customer.RegularPickupDay == DateTime.Now.DayOfWeek.ToString())
+                {
+                    customers.Add(customer);
+                }
+            }
+            return customers;
+        }
+
+        private List<Customer> CheckSpecialRequests(List<Customer> customers)
+        {
+            customers = SpecialPickupScheduledToday(customers);
+            customers = CheckForSuspendedService(customers);
+            return customers;
+        }
+
+        private List<Customer> SpecialPickupScheduledToday(List<Customer> customers)
+        {
+            foreach (Customer customer in _context.Customers)
+            {
+                if (customer.SpecialPickupStatus == true)
+                {
+                    if (customer.AdditionalPickupDate.Equals(DateTime.Now.Date))
+                    {
+                        customers.Add(customer);
+                    }
+                }
+            }
+            return customers;
+        }
+
+        private List<Customer> CheckForSuspendedService(List<Customer> customers)
+        {
+            foreach (Customer customer in customers.ToList())
+            {
+                if (customer.SuspendStartDate?.CompareTo(DateTime.Now.Date) <= 0 && customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) > 0)
+                {
+                    customers.Remove(customer);
+                }
+            }
+            return customers;
         }
     }
 }
