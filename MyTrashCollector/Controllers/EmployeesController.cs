@@ -35,7 +35,7 @@ namespace MyTrashCollector.Controllers
         }
 
         // GET: Employees/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> ViewDailyCustomers(int? id)
         {
             if (id == null)
             {
@@ -44,12 +44,15 @@ namespace MyTrashCollector.Controllers
 
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(m => m.EmployeeId == id);
+
             if (employee == null)
             {
                 return NotFound();
             }
+            
+            var customers = _context.Customers.Where(c => c.Address.AddressZip == employee.ZipCodeOfResponsibility).ToList();
 
-            return View(employee);
+            return View(customers);
         }
 
         // GET: Employees/Create
