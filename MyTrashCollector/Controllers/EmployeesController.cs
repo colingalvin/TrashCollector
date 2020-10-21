@@ -45,33 +45,6 @@ namespace MyTrashCollector.Controllers
             return View("ViewAllCustomers", customers);
         }
 
-        private static string GetDayOfWeek(int day)
-        {
-            string dayOfWeek = "";
-            switch(day)
-            {
-                case 0:
-                    dayOfWeek = "Monday";
-                    break;
-                case 1:
-                    dayOfWeek = "Tuesday";
-                    break;
-                case 2:
-                    dayOfWeek = "Wednesday";
-                    break;
-                case 3:
-                    dayOfWeek = "Thursday";
-                    break;
-                case 4:
-                    dayOfWeek = "Friday";
-                    break;
-                case 5:
-                    dayOfWeek = "Saturday";
-                    break;
-            }
-            return dayOfWeek;
-        }
-
         // GET: Employees/Details/5
         public async Task<IActionResult> ViewAllCustomers(int? id)
         {

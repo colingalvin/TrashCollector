@@ -75,6 +75,18 @@
                 </dl>
             <div class="col-lg-6">
                 Google Maps Stuff
+                <div id="map" style="height: 400px; width: 600px;"></div>
+                <script>
+                    let map;
+                    function initMap() {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: { lat: -34.397, lng: 150.644 },
+                            zoom: 8,
+                        });
+                    }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1EWSxfhgpO6k5p4V315xk5WltwK2ItMk&callback=initMap&libraries=&v=weekly"
+                        defer></script>
             </div>
         </div>
     </div>
