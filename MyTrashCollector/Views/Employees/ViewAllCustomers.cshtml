@@ -8,8 +8,20 @@
 <h1>All Customers</h1>
 
 <p>
-    <a asp-action="Index">View Today's Customers</a>
+    <a asp-action="Index">View Today's Route</a>
 </p>
+
+<h3>Filter By Day:</h3>
+<p>
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Monday">Monday</a> |
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Tuesday">Tuesday</a> |
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Wednesday">Wednesday</a> |
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Thursday">Thursday</a> |
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Friday">Friday</a> |
+    <a asp-action="ViewCustomersByDay" asp-route-dayOfWeek="Saturday">Saturday</a> |
+    <a asp-action="ViewAllCustomers">View All Customers</a>
+</p>
+
 <table class="table">
     <thead>
         <tr>
