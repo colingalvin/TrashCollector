@@ -33,28 +33,17 @@ namespace MyTrashCollector.Controllers
                 return RedirectToAction("Create");
             }
             var customers = GetDailyCustomers(loggedInEmployee);
-            return View("ViewCustomers", customers);
+            return View("ViewDailyCustomers", customers);
         }
 
         // GET: Employees/Details/5
         public async Task<IActionResult> ViewAllCustomers(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployee = _context.Employees.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var customers = _context.Customers.Where(c => c.Address.AddressZip == loggedInEmployee.ZipCodeOfResponsibility).ToList();
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            
-            var customers = _context.Customers.Where(c => c.Address.AddressZip == employee.ZipCodeOfResponsibility).ToList();
-
-            return View("ViewCustomers", customers);
+            return View("ViewAllCustomers", customers);
         }
 
         //public async Task<IActionResult> ViewDailyCustomers(int? id)

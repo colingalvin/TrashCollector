@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MyTrashCollector.Models.Customer>
+
+@{
+    ViewData["Title"] = "ViewDailyCustomers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All Customers</h1>
+
+<p>
+    <a asp-action="ViewDailyCustomers">View Today's Customers</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegularPickupDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialPickupStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegularPickupDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecialPickupStatus)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.CustomerId">View Customer Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
