@@ -8,7 +8,7 @@
 <h1>All Customers</h1>
 
 <p>
-    <a asp-action="ViewDailyCustomers">View Today's Customers</a>
+    <a asp-action="Index">View Today's Customers</a>
 </p>
 <table class="table">
     <thead>
@@ -50,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.SpecialPickupStatus)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.CustomerId">View Customer Details</a>
+                <a asp-action="CustomerDetails" asp-route-id="@item.CustomerId">View Customer Details</a>
             </td>
         </tr>
 }

@@ -141,22 +141,11 @@ namespace MyTrashCollector.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Customers
+        public async Task<IActionResult> CustomerDetails(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
+            var customer = _context.Customers.Include(c => c.Address).Where(c => c.CustomerId == id).FirstOrDefault();
+            return View("CustomerDetails", customer);
         }
 
         // POST: Employees/Delete/5

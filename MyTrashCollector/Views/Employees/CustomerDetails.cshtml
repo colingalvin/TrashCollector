@@ -1,0 +1,67 @@
+﻿@model MyTrashCollector.Models.Customer
+
+@{
+    ViewData["Title"] = "CustomerDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CustomerDetails</h1>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.StreetAddress)
+            @Html.DisplayFor(model => model.Address.AddressCity)
+            @Html.DisplayFor(model => model.Address.AddressState)
+            @Html.DisplayFor(model => model.Address.AddressZip)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RegularPickupDay)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RegularPickupDay)
+        </dd>
+        @if(Model.SpecialPickupStatus == true)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.SuspendStartDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.SuspendStartDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.SuspendEndDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.SuspendEndDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.AdditionalPickupDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.AdditionalPickupDate)
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">View Today's Customers</a> |
+    <a asp-action="ViewAllCustomers">View All Customers</a>
+</div>
