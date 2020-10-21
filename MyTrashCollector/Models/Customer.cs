@@ -30,11 +30,11 @@ namespace MyTrashCollector.Models
         [Display(Name = "Special Pickup?")]
         public bool SpecialPickupStatus { get; set; }
 
-        [Display(Name = "Start Date for Suspend Service")]
+        [Display(Name = "Suspend Start")]
         [DataType(DataType.Date)]
         public DateTime? SuspendStartDate { get; set; }
 
-        [Display(Name = "End Date for Suspend Service")]
+        [Display(Name = "Suspend End")]
         [DataType(DataType.Date)]
         public DateTime? SuspendEndDate { get; set; }
 
@@ -43,7 +43,7 @@ namespace MyTrashCollector.Models
 
         public bool DailyPickupComplete { get; set; }
 
-        [Display(Name = "Additional Pickup Date")]
+        [Display(Name = "Additional Pickup")]
         [DataType(DataType.Date)]
         public DateTime? AdditionalPickupDate { get; set; }
 
