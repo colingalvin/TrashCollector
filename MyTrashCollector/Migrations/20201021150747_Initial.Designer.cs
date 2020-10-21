@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTrashCollector.Data;
 
-namespace MyTrashCollector.Data.Migrations
+namespace MyTrashCollector.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201020165607_Re-seed database.")]
-    partial class Reseeddatabase
+    [Migration("20201021150747_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,15 @@ namespace MyTrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8fdeeca-97f3-4fec-a3d3-5c724bd6105d",
-                            ConcurrencyStamp = "e7309b2f-a9a2-42af-b0f2-ec63f0ed33f4",
+                            Id = "7ee8cd79-2785-4803-877a-a1e902e215fd",
+                            ConcurrencyStamp = "e7f35962-5b5c-448d-bfad-0e2b788b6277",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "c9597778-672a-4c21-a0c0-fba5fc764a23",
-                            ConcurrencyStamp = "9b8316fe-2198-4b48-b2ca-888891fde7ee",
+                            Id = "565cda75-6250-4ddf-8f3b-36ed6dfd5df5",
+                            ConcurrencyStamp = "65710eaf-b247-41e8-b2e3-4d76e71040fe",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -267,11 +267,14 @@ namespace MyTrashCollector.Data.Migrations
                     b.Property<double>("AccountBalance")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("AdditionalPickupDate")
+                    b.Property<DateTime?>("AdditionalPickupDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("DailyPickupComplete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -288,10 +291,10 @@ namespace MyTrashCollector.Data.Migrations
                     b.Property<bool>("SpecialPickupStatus")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("SuspendEndDate")
+                    b.Property<DateTime?>("SuspendEndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("SuspendStartDate")
+                    b.Property<DateTime?>("SuspendStartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("CustomerId");

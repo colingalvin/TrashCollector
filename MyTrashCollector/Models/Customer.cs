@@ -41,6 +41,8 @@ namespace MyTrashCollector.Models
         [Display(Name = "Regular Pickup Day")]
         public string RegularPickupDay { get; set; }
 
+        public bool DailyPickupComplete { get; set; }
+
         [Display(Name = "Additional Pickup Date")]
         [DataType(DataType.Date)]
         public DateTime? AdditionalPickupDate { get; set; }

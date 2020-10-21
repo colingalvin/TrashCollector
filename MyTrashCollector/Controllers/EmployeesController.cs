@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyTrashCollector.Data;
 using MyTrashCollector.Models;
+using SQLitePCL;
 
 namespace MyTrashCollector.Controllers
 {
@@ -41,7 +42,7 @@ namespace MyTrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployee = _context.Employees.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var customers = _context.Customers.Where(c => c.Address.AddressZip == loggedInEmployee.ZipCodeOfResponsibility).ToList();
+            var customers = _context.Customers.Include(c => c.Address).Where(c => c.Address.AddressZip == loggedInEmployee.ZipCodeOfResponsibility).ToList();
 
             return View("ViewAllCustomers", customers);
         }
@@ -120,22 +121,8 @@ namespace MyTrashCollector.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.EmployeeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
@@ -148,26 +135,25 @@ namespace MyTrashCollector.Controllers
             return View("CustomerDetails", customer);
         }
 
-        // POST: Employees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ConfirmPickup(int? id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
+            var customer = _context.Customers.Where(c => c.CustomerId == id).FirstOrDefault();
+            ChargeCustomer(customer);
+            customer.DailyPickupComplete = true;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
-        private bool EmployeeExists(int id)
+        private static void ChargeCustomer(Customer customer)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            customer.AccountBalance += 25;
         }
 
         private List<Customer> GetDailyCustomers(Employee employee)
         {
             var customers = GetRegularCustomers(employee);
             customers = CheckSpecialRequests(customers);
+            customers = RemoveCompletedCustomers(customers);
             return customers;
         }
 
@@ -176,7 +162,7 @@ namespace MyTrashCollector.Controllers
             List<Customer> customers = new List<Customer>();
             foreach (Customer customer in _context.Customers.Include(c => c.Address))
             {
-                if (customer.Address.AddressZip == employee.ZipCodeOfResponsibility && customer.RegularPickupDay == DateTime.Now.DayOfWeek.ToString())
+                if (customer.Address.AddressZip == employee.ZipCodeOfResponsibility && customer.RegularPickupDay == DateTime.Now.DayOfWeek.ToString() && customer.DailyPickupComplete == false)
                 {
                     customers.Add(customer);
                 }
@@ -211,6 +197,18 @@ namespace MyTrashCollector.Controllers
             foreach (Customer customer in customers.ToList())
             {
                 if (customer.SuspendStartDate?.CompareTo(DateTime.Now.Date) <= 0 && customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) > 0)
+                {
+                    customers.Remove(customer);
+                }
+            }
+            return customers;
+        }
+
+        private List<Customer> RemoveCompletedCustomers(List<Customer> customers)
+        {
+            foreach (Customer customer in customers.ToList())
+            {
+                if (customer.DailyPickupComplete == true)
                 {
                     customers.Remove(customer);
                 }
