@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTrashCollector.Data;
 
 namespace MyTrashCollector.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201022132828_Add address latlng")]
+    partial class Addaddresslatlng
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace MyTrashCollector.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "51c4f836-fe79-42b4-8d36-3d98aef18c36",
-                            ConcurrencyStamp = "1b7467ed-0770-4e0a-b3f9-5b77ab080de3",
+                            Id = "84842aa0-3c8b-4319-bd05-9b1f59a438fb",
+                            ConcurrencyStamp = "42befdcf-0652-45c6-9649-998bf7bd31d5",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "4b30268a-7b28-41da-a8aa-500d5ef284c9",
-                            ConcurrencyStamp = "2f437af8-345d-44fc-9b63-1660631a7f60",
+                            Id = "6e1ff2f4-8ed9-4d8b-82af-5b0c67757ae3",
+                            ConcurrencyStamp = "637340e2-12d4-40d6-84d8-9b57d2bc9612",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -250,7 +252,7 @@ namespace MyTrashCollector.Migrations
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double>("Longitute")
                         .HasColumnType("float");
 
                     b.Property<string>("StreetAddress")

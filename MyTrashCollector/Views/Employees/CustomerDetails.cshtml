@@ -47,45 +47,55 @@
                 </div>
                 @if (Model.SpecialPickupStatus == true)
                 {
-                    <div class="row">
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.SuspendStartDate)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.SuspendStartDate)
-                        </dd>
-                    </div>
-                    <div class="row">
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.SuspendEndDate)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.SuspendEndDate)
-                        </dd>
-                    </div>
-                    <div class="row">
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.AdditionalPickupDate)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.AdditionalPickupDate)
-                        </dd>
-                    </div>
+                    @if (Model.SuspendStartDate != null || Model.SuspendEndDate != null)
+                    {
+                        <div class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.SuspendStartDate)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.SuspendStartDate)
+                            </dd>
+                        </div>
+                        <div class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.SuspendEndDate)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.SuspendEndDate)
+                            </dd>
+                        </div>
                     }
+                    @if (Model.AdditionalPickupDate != null)
+                    {
+                        <div class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.AdditionalPickupDate)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.AdditionalPickupDate)
+                            </dd>
+                        </div>
+                    }
+                }
                 </dl>
             <div class="col-lg-6">
-                Google Maps Stuff
-                <div id="map" style="height: 400px; width: 600px;"></div>
+                <div id="map" style="height: 400px; width: 100%;"></div>
+
                 <script>
                     let map;
                     function initMap() {
                         map = new google.maps.Map(document.getElementById("map"), {
-                            center: { lat: -34.397, lng: 150.644 },
-                            zoom: 8,
+                            center: { lat: @Model.Address.Latitude, lng: @Model.Address.Longitude },
+                            zoom: 12,
+                        });
+                        new google.maps.Marker({
+                            position: { lat: @Model.Address.Latitude, lng: @Model.Address.Longitude },
+                            map,
                         });
                     }
                 </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1EWSxfhgpO6k5p4V315xk5WltwK2ItMk&callback=initMap&libraries=&v=weekly"
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWOB6gezGxJ2wRQV28k4_rzWjiLOzkkmo&callback=initMap&libraries=&v=weekly"
                         defer></script>
             </div>
         </div>

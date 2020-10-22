@@ -18,5 +18,7 @@ namespace MyTrashCollector.Models
         public string AddressState { get; set; }
         [Display(Name = "Zip Code")]
         public int AddressZip { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
