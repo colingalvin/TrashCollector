@@ -68,8 +68,7 @@ namespace MyTrashCollector.Controllers
         private async Task<Address> GeocodeAddress(Address address)
         {
             string formattedAddress = ParseAddress(address);
-            string apiKey = "API_KEY_HERE";
-            Uri fullURL = new Uri("https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + apiKey);
+            Uri fullURL = new Uri("https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + APIKeys.GOOGLE_API_KEY);
             var response = await httpClient.GetAsync(fullURL);
 
             if(response.IsSuccessStatusCode)

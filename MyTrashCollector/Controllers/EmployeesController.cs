@@ -24,7 +24,6 @@ namespace MyTrashCollector.Controllers
             _context = context;
         }
 
-        // GET: Employees
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -45,7 +44,6 @@ namespace MyTrashCollector.Controllers
             return View("ViewAllCustomers", customers);
         }
 
-        // GET: Employees/Details/5
         public async Task<IActionResult> ViewAllCustomers(int? id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -55,35 +53,11 @@ namespace MyTrashCollector.Controllers
             return View("ViewAllCustomers", customers);
         }
 
-        //public async Task<IActionResult> ViewDailyCustomers(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var employee = await _context.Employees
-        //        .FirstOrDefaultAsync(m => m.EmployeeId == id);
-
-        //    if (employee == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var customers = GetDailyCustomers(employee);
-
-        //    return View("ViewCustomers", customers);
-        //}
-
-        // GET: Employees/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Employee employee)
@@ -99,44 +73,6 @@ namespace MyTrashCollector.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            return View(employee);
-        }
-
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Employee employee)
-        {
-            if (id != employee.EmployeeId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Update(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
-        }
-
-        // GET: Customers
         public async Task<IActionResult> CustomerDetails(int? id)
         {
             var customer = _context.Customers.Include(c => c.Address).Where(c => c.CustomerId == id).FirstOrDefault();
@@ -146,15 +82,15 @@ namespace MyTrashCollector.Controllers
         public async Task<IActionResult> ConfirmPickup(int? id)
         {
             var customer = _context.Customers.Where(c => c.CustomerId == id).FirstOrDefault();
-            ChargeCustomer(customer);
-            customer.DailyPickupComplete = true;
+            CompletePickup(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private static void ChargeCustomer(Customer customer)
+        private static void CompletePickup(Customer customer)
         {
             customer.AccountBalance += 25;
+            customer.DailyPickupComplete = true;
         }
 
         private List<Customer> GetDailyCustomers(Employee employee)
