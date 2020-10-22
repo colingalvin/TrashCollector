@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update;
 using MyTrashCollector.ActionFilters;
 using MyTrashCollector.Data;
 using MyTrashCollector.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MyTrashCollector.Controllers
 {
@@ -17,6 +23,12 @@ namespace MyTrashCollector.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private static readonly HttpClient httpClient;
+
+        static CustomersController()
+        {
+            httpClient = new HttpClient();
+        }
 
         public CustomersController(ApplicationDbContext context)
         {
@@ -70,9 +82,67 @@ namespace MyTrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             customer.IdentityUserId = userId;
+            string clientAddress = ParseAddress(customer.Address);
+            string apiKey = "AIzaSyDHR2TolBsA8nY-aSlQcan-RS_1yjg5Tkc";
+            string fullURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + clientAddress + "&key=" + apiKey;
+
+            var response = await httpClient.GetAsync(fullURL);
+
+            var task = response.Content.ReadAsStringAsync().Result;
+            JObject mapsData = JsonConvert.DeserializeObject<JObject>(task);
+
+            var latitude = mapsData["results"][0]["geometry"]["location"]["lat"];
+            var longitude = mapsData["results"][0]["geometry"]["location"]["lng"];
+
+            customer.Address.Latitude = Convert.ToDouble(latitude);
+            customer.Address.Longitude = Convert.ToDouble(longitude);
+
+            
             _context.Add(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private string ParseAddress(Address address)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < address.StreetAddress.Length; i++)
+            {
+                if (address.StreetAddress[i] == ' ')
+                {
+                    stringBuilder.Append("+");
+                }
+                else
+                {
+                    stringBuilder.Append(address.StreetAddress[i]);
+                }
+            }
+            stringBuilder.Append(",+");
+            for (int i = 0; i < address.AddressCity.Length; i++)
+            {
+                if (address.AddressCity[i] == ' ')
+                {
+                    stringBuilder.Append("+");
+                }
+                else
+                {
+                    stringBuilder.Append(address.AddressCity[i]);
+                }
+            }
+            stringBuilder.Append(",+");
+            for (int i = 0; i < address.AddressState.Length; i++)
+            {
+                if (address.AddressState[i] == ' ')
+                {
+                    stringBuilder.Append("+");
+                }
+                else
+                {
+                    stringBuilder.Append(address.AddressState[i]);
+                }
+            }
+            string clientAddress = stringBuilder.ToString();
+            return clientAddress;
         }
 
         // GET: Customers/Edit/5
