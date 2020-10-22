@@ -14,24 +14,17 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CustomerId" />
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="LastName" />
             <input type="hidden" asp-for="AddressId" />
             <input type="hidden" asp-for="AccountBalance" />
             <input type="hidden" asp-for="SpecialPickupStatus" />
             <input type="hidden" asp-for="SuspendStartDate" />
             <input type="hidden" asp-for="SuspendEndDate" />
             <input type="hidden" asp-for="AdditionalPickupDate" />
+            <input type="hidden" asp-for="DailyPickupComplete" />
             <input type="hidden" asp-for="IdentityUserId" />
             <input type="hidden" asp-for="Address.AddressId" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Address.StreetAddress" class="control-label"></label>
                 <input asp-for="Address.StreetAddress" class="form-control" />
@@ -65,7 +58,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Account Overview</a>
 </div>
 
 @section Scripts {

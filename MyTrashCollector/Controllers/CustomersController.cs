@@ -35,11 +35,10 @@ namespace MyTrashCollector.Controllers
             _context = context;
         }
 
-        // GET: Customers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // var loggedInCustomer = _context.Customers.Include(c => c.Address).FirstOrDefault(c => c.IdentityUserId == userId);
+            // var loggedInCustomer = _context.Customers.Include(c => c.Address).FirstOrDefault(c => c.IdentityUserId == userId); - DIFFERENCE?
             var loggedInCustomer = _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).FirstOrDefault();
             if(loggedInCustomer == null)
             {
@@ -48,32 +47,12 @@ namespace MyTrashCollector.Controllers
             return View(loggedInCustomer);
         }
 
-        // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers.Include(c => c.Address).FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            return View(customer);
-        }
-
-        // GET: Customers/Create
         public IActionResult Create()
         {
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "AddressId");
             return View();
         }
 
-        // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Customer customer)
@@ -90,16 +69,16 @@ namespace MyTrashCollector.Controllers
         {
             string formattedAddress = ParseAddress(address);
             string apiKey = "API_KEY_HERE";
-            string fullURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + apiKey;
+            Uri fullURL = new Uri("https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + apiKey);
             var response = await httpClient.GetAsync(fullURL);
 
-            //if(response.IsSuccessStatusCode)
-            //{
+            if(response.IsSuccessStatusCode)
+            {
                 var task = response.Content.ReadAsStringAsync().Result;
                 JObject mapsData = JsonConvert.DeserializeObject<JObject>(task);
                 address.Latitude = Convert.ToDouble(mapsData["results"][0]["geometry"]["location"]["lat"]);
                 address.Longitude = Convert.ToDouble(mapsData["results"][0]["geometry"]["location"]["lng"]);
-            //}
+            }
             
             return address;
         }
@@ -107,7 +86,6 @@ namespace MyTrashCollector.Controllers
         private string ParseAddress(Address address)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            // Iterate through list of selected properties?
             for (int i = 0; i < address.StreetAddress.Length; i++)
             {
                 if (address.StreetAddress[i] == ' ')
@@ -146,7 +124,6 @@ namespace MyTrashCollector.Controllers
             return stringBuilder.ToString();
         }
 
-        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,8 +135,6 @@ namespace MyTrashCollector.Controllers
                 .Include(c => c.Address)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
 
-            //var customer = await _context.Customers.FindAsync(id);
-
             if (customer == null)
             {
                 return NotFound();
@@ -168,9 +143,6 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Customer customer)
@@ -205,42 +177,11 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .Include(c => c.Address)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.CustomerId == id);
         }
 
-        // GET: Customers/Edit/5
         public async Task<IActionResult> AddPickup(int? id)
         {
             if (id == null)
@@ -258,9 +199,6 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPickup(int id, Customer customer)
@@ -274,7 +212,10 @@ namespace MyTrashCollector.Controllers
             {
                 try
                 {
-                    customer.SpecialPickupStatus = true;
+                    if (customer.AdditionalPickupDate != null)
+                    {
+                        customer.SpecialPickupStatus = true;
+                    }
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
@@ -295,7 +236,6 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Edit/5
         public async Task<IActionResult> SuspendService(int? id)
         {
             if (id == null)
@@ -313,9 +253,6 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SuspendService(int id, Customer customer)
@@ -329,7 +266,10 @@ namespace MyTrashCollector.Controllers
             {
                 try
                 {
-                    customer.SpecialPickupStatus = true;
+                    if (customer.SuspendStartDate != null || customer.SuspendEndDate != null)
+                    {
+                        customer.SpecialPickupStatus = true;
+                    }
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }

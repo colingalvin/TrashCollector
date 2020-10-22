@@ -7,7 +7,7 @@
 
 <h1>Schedule Additional Pickup</h1>
 
-<h4>for INSERT ADDRESS HERE</h4>
+<h4>for @Model.Address.StreetAddress</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -22,6 +22,7 @@
             <input type="hidden" asp-for="SuspendStartDate" />
             <input type="hidden" asp-for="SuspendEndDate" />
             <input type="hidden" asp-for="RegularPickupDay" />
+            <input type="hidden" asp-for="DailyPickupComplete" />
             <input type="hidden" asp-for="IdentityUserId" />
             <div class="form-group">
                 <label asp-for="AdditionalPickupDate" class="control-label"></label>

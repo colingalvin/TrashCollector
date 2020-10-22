@@ -1,50 +1,83 @@
 ﻿@model MyTrashCollector.Models.Customer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Account Overview";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>@Model.FirstName's Account Overview</h1>
 
 <div>
-    <h4>Customer</h4>
+    <h4>@Model.Address.StreetAddress</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Address)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address.StreetAddress) 
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.StreetAddress)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AccountBalance)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AccountBalance)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RegularPickupDay)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RegularPickupDay)
         </dd>
+        @if (Model.SpecialPickupStatus == true)
+        {
+            @if (Model.SuspendStartDate != null || Model.SuspendEndDate != null)
+            {
+                <div class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SuspendStartDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SuspendStartDate)
+                    </dd>
+                </div>
+                <div class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SuspendEndDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SuspendEndDate)
+                    </dd>
+                </div>
+            }
+            @if (Model.AdditionalPickupDate != null)
+            {
+                <div class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.AdditionalPickupDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.AdditionalPickupDate)
+                    </dd>
+                </div>
+            }
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit Account Info</a> |
     <a asp-action="AddPickup" asp-route-id="@Model.CustomerId">Request Additional Pickup</a> |
     <a asp-action="SuspendService" asp-route-id="@Model.CustomerId">Schedule Suspension of Service</a> |
     <a asp-action="Index">Account Overview</a>

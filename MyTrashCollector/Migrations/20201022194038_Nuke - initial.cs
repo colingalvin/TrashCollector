@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyTrashCollector.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Nukeinitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,9 @@ namespace MyTrashCollector.Migrations
                     StreetAddress = table.Column<string>(nullable: true),
                     AddressCity = table.Column<string>(nullable: true),
                     AddressState = table.Column<string>(nullable: true),
-                    AddressZip = table.Column<int>(nullable: false)
+                    AddressZip = table.Column<int>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,12 +230,12 @@ namespace MyTrashCollector.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7ee8cd79-2785-4803-877a-a1e902e215fd", "e7f35962-5b5c-448d-bfad-0e2b788b6277", "Employee", "EMPLOYEE" });
+                values: new object[] { "95bfcc00-7c88-404a-98d8-9dfa3180a8cc", "8e4d21f9-88b0-439e-95b8-640edf5ba485", "Employee", "EMPLOYEE" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "565cda75-6250-4ddf-8f3b-36ed6dfd5df5", "65710eaf-b247-41e8-b2e3-4d76e71040fe", "Customer", "CUSTOMER" });
+                values: new object[] { "a0e2c6ea-cb1f-457b-b447-d06046e80748", "19091724-5cce-44d3-9c28-d643c27a68ce", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
