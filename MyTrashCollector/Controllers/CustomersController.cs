@@ -39,6 +39,7 @@ namespace MyTrashCollector.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // var loggedInCustomer = _context.Customers.Include(c => c.Address).FirstOrDefault(c => c.IdentityUserId == userId);
             var loggedInCustomer = _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).FirstOrDefault();
             if(loggedInCustomer == null)
             {
@@ -55,14 +56,11 @@ namespace MyTrashCollector.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.Address)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            var customer = await _context.Customers.Include(c => c.Address).FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)
             {
                 return NotFound();
             }
-
             return View(customer);
         }
 
@@ -82,30 +80,34 @@ namespace MyTrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             customer.IdentityUserId = userId;
-            string clientAddress = ParseAddress(customer.Address);
-            string apiKey = "AIzaSyDHR2TolBsA8nY-aSlQcan-RS_1yjg5Tkc";
-            string fullURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + clientAddress + "&key=" + apiKey;
-
-            var response = await httpClient.GetAsync(fullURL);
-
-            var task = response.Content.ReadAsStringAsync().Result;
-            JObject mapsData = JsonConvert.DeserializeObject<JObject>(task);
-
-            var latitude = mapsData["results"][0]["geometry"]["location"]["lat"];
-            var longitude = mapsData["results"][0]["geometry"]["location"]["lng"];
-
-            customer.Address.Latitude = Convert.ToDouble(latitude);
-            customer.Address.Longitude = Convert.ToDouble(longitude);
-
-            
+            customer.Address = await GeocodeAddress(customer.Address);
             _context.Add(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task<Address> GeocodeAddress(Address address)
+        {
+            string formattedAddress = ParseAddress(address);
+            string apiKey = "API_KEY_HERE";
+            string fullURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + apiKey;
+            var response = await httpClient.GetAsync(fullURL);
+
+            //if(response.IsSuccessStatusCode)
+            //{
+                var task = response.Content.ReadAsStringAsync().Result;
+                JObject mapsData = JsonConvert.DeserializeObject<JObject>(task);
+                address.Latitude = Convert.ToDouble(mapsData["results"][0]["geometry"]["location"]["lat"]);
+                address.Longitude = Convert.ToDouble(mapsData["results"][0]["geometry"]["location"]["lng"]);
+            //}
+            
+            return address;
+        }
+
         private string ParseAddress(Address address)
         {
             StringBuilder stringBuilder = new StringBuilder();
+            // Iterate through list of selected properties?
             for (int i = 0; i < address.StreetAddress.Length; i++)
             {
                 if (address.StreetAddress[i] == ' ')
@@ -141,8 +143,7 @@ namespace MyTrashCollector.Controllers
                     stringBuilder.Append(address.AddressState[i]);
                 }
             }
-            string clientAddress = stringBuilder.ToString();
-            return clientAddress;
+            return stringBuilder.ToString();
         }
 
         // GET: Customers/Edit/5
@@ -183,6 +184,7 @@ namespace MyTrashCollector.Controllers
             {
                 try
                 {
+                    customer.Address = await GeocodeAddress(customer.Address);
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
