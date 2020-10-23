@@ -96,7 +96,7 @@ namespace MyTrashCollector.Controllers
         private List<Customer> GetDailyCustomers(Employee employee)
         {
             var customers = GetRegularCustomers(employee);
-            customers = CheckSpecialRequests(customers);
+            customers = CheckSpecialRequests(employee, customers);
             customers = RemoveCompletedCustomers(customers);
             return customers;
         }
@@ -127,20 +127,20 @@ namespace MyTrashCollector.Controllers
             return customers;
         }
 
-        private List<Customer> CheckSpecialRequests(List<Customer> customers)
+        private List<Customer> CheckSpecialRequests(Employee employee, List<Customer> customers)
         {
-            customers = SpecialPickupScheduledToday(customers);
-            customers = CheckForSuspendedService(customers);
+            customers = SpecialPickupScheduledToday(employee, customers);
+            customers = CheckForSuspendedService(employee, customers);
             return customers;
         }
 
-        private List<Customer> SpecialPickupScheduledToday(List<Customer> customers)
+        private List<Customer> SpecialPickupScheduledToday(Employee employee, List<Customer> customers)
         {
             foreach (Customer customer in _context.Customers)
             {
                 if (customer.SpecialPickupStatus == true)
                 {
-                    if (customer.AdditionalPickupDate.Equals(DateTime.Now.Date))
+                    if (customer.AdditionalPickupDate.Equals(DateTime.Now.Date) && customer.Address.AddressZip == employee.ZipCodeOfResponsibility)
                     {
                         customers.Add(customer);
                     }
@@ -149,11 +149,11 @@ namespace MyTrashCollector.Controllers
             return customers;
         }
 
-        private List<Customer> CheckForSuspendedService(List<Customer> customers)
+        private List<Customer> CheckForSuspendedService(Employee employee, List<Customer> customers)
         {
             foreach (Customer customer in customers.ToList())
             {
-                if (customer.SuspendStartDate?.CompareTo(DateTime.Now.Date) <= 0 && customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) > 0)
+                if (customer.SuspendStartDate?.CompareTo(DateTime.Now.Date) <= 0 && customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) > 0 && customer.Address.AddressZip == employee.ZipCodeOfResponsibility)
                 {
                     customers.Remove(customer);
                 }
