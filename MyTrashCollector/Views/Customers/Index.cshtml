@@ -43,8 +43,6 @@
         </dd>
         @if (Model.SpecialPickupStatus == true)
         {
-            @*Add Special Pickup Section Header
-                Fix layout*@
             @if (Model.SuspendStartDate != null || Model.SuspendEndDate != null)
             {
                 <dt class="col-sm-2">
@@ -70,7 +68,6 @@
                 </dd>
             }
         }
-    </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit Account Info</a> |
