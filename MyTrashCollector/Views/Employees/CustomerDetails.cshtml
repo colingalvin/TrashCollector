@@ -87,7 +87,7 @@
                     function initMap() {
                         map = new google.maps.Map(document.getElementById("map"), {
                             center: { lat: @Model.Address.Latitude, lng: @Model.Address.Longitude },
-                            zoom: 12,
+                            zoom: 13,
                         });
                         new google.maps.Marker({
                             position: { lat: @Model.Address.Latitude, lng: @Model.Address.Longitude },
@@ -95,7 +95,7 @@
                         });
                     }
                 </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GOOGLE_API_KEY=initMap&libraries=&v=weekly"
+                <script src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GOOGLE_API_KEY&callback=initMap&libraries=&v=weekly"
                         defer></script>
             </div>
         </div>
