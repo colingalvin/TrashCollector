@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,6 +17,7 @@ using MyTrashCollector.Data;
 using MyTrashCollector.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Stripe;
 
 namespace MyTrashCollector.Controllers
 {
@@ -55,7 +57,7 @@ namespace MyTrashCollector.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create(Models.Customer customer)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             customer.IdentityUserId = userId;
@@ -65,7 +67,7 @@ namespace MyTrashCollector.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<Address> GeocodeAddress(Address address)
+        private async Task<Models.Address> GeocodeAddress(Models.Address address)
         {
             string formattedAddress = ParseAddress(address);
             Uri fullURL = new Uri("https://maps.googleapis.com/maps/api/geocode/json?address=" + formattedAddress + "&key=" + APIKeys.GOOGLE_API_KEY);
@@ -82,7 +84,7 @@ namespace MyTrashCollector.Controllers
             return address;
         }
 
-        private string ParseAddress(Address address)
+        private string ParseAddress(Models.Address address)
         {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < address.StreetAddress.Length; i++)
@@ -144,7 +146,7 @@ namespace MyTrashCollector.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Customer customer)
+        public async Task<IActionResult> Edit(int id, Models.Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -202,7 +204,7 @@ namespace MyTrashCollector.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPickup(int id, Customer customer)
+        public async Task<IActionResult> AddPickup(int id, Models.Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -256,7 +258,7 @@ namespace MyTrashCollector.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SuspendService(int id, Customer customer)
+        public async Task<IActionResult> SuspendService(int id, Models.Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -294,6 +296,32 @@ namespace MyTrashCollector.Controllers
         public async Task<IActionResult> MakePayment()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MakePayment(IFormCollection collection)
+        {
+            StripeConfiguration.ApiKey = "sk_test_51HfSXkEFx1Ks5Nyz8wSk7nbM01l4ECbTPczxs9gmnQeqbNeKlLc7bYsP573uJ2qbQEIkJhfvFvcUIPFLYYhXQFQz00XyHNXFNe";
+
+            // `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
+            var options = new ChargeCreateOptions
+            {
+                Amount = 2000,
+                Currency = "usd",
+                Source = "tok_visa",
+                Description = "My First Test Charge (created for API docs)",
+            };
+            var service = new ChargeService();
+            service.Create(options);
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // var loggedInCustomer = _context.Customers.Include(c => c.Address).FirstOrDefault(c => c.IdentityUserId == userId); - DIFFERENCE?
+            var loggedInCustomer = _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            loggedInCustomer.AccountBalance -= 20;
+            _context.Update(loggedInCustomer);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }
