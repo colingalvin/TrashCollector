@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "MakePayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section stripe{ 
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+        var stripe = Stripe('pk_test_51HfSXkEFx1Ks5NyzavFpumJiHajIaEHmc0Ue7jK21ni5SeiryvE7OQiodh2SOWEa6N9POH101659KoBLH7VyKKIB008eus7Vas');
+
+        var elements = stripe.elements();
+
+        var cardElement = elements.create('card');
+
+        cardElement.mount('#card-element');
+
+        cardElement.on('change', function (event) {
+            if (event.complete) {
+                // enable payment button
+            } else if (event.error) {
+                // show validation to customer
+            }
+        });
+    </script>
+}
+
+<h2>Make Payment</h2>
+
+<form action="/charge" method="post" id="payment-form">
+    <div class="form-row">
+        <label>
+            Credit or Debit Card
+            <div id="card-element"></div>
+        </label>
+
+        <!--Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+    </div>
+
+    <button>Submit Payment</button>
+</form>
+
+

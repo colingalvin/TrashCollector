@@ -290,5 +290,10 @@ namespace MyTrashCollector.Controllers
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "AddressId", customer.AddressId);
             return View(customer);
         }
+
+        public async Task<IActionResult> MakePayment()
+        {
+            return View();
+        }
     }
 }
