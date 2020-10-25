@@ -27,6 +27,10 @@ namespace MyTrashCollector.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double AccountBalance { get; set; }
 
+        [Display(Name = "Payment Amount")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double PaymentAmount { get; set; }
+
         [Display(Name = "Special Pickup?")]
         public bool SpecialPickupStatus { get; set; }
 

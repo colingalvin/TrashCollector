@@ -48,15 +48,15 @@ namespace MyTrashCollector.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "95bfcc00-7c88-404a-98d8-9dfa3180a8cc",
-                            ConcurrencyStamp = "8e4d21f9-88b0-439e-95b8-640edf5ba485",
+                            Id = "2b812b67-425e-44b3-ab48-c066fde1dc5c",
+                            ConcurrencyStamp = "bed9fbdb-b156-455c-9895-f5e017d90816",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "a0e2c6ea-cb1f-457b-b447-d06046e80748",
-                            ConcurrencyStamp = "19091724-5cce-44d3-9c28-d643c27a68ce",
+                            Id = "3d10f39b-beae-4847-8e10-81b72f2360e8",
+                            ConcurrencyStamp = "d416d327-d79b-4256-b1c1-12d6a3a62e85",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -288,6 +288,9 @@ namespace MyTrashCollector.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PaymentAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("RegularPickupDay")
                         .HasColumnType("nvarchar(max)");

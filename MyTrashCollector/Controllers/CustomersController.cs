@@ -293,20 +293,32 @@ namespace MyTrashCollector.Controllers
             return View(customer);
         }
 
-        public async Task<IActionResult> MakePayment()
+        public async Task<IActionResult> MakePayment(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _context.Customers.FindAsync(id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "AddressId", customer.AddressId);
+            return View(customer);
         }
 
         [HttpPost]
-        public async Task<IActionResult> MakePayment(IFormCollection collection)
+        public async Task<IActionResult> MakePayment(IFormCollection collection, double paymentAmount)
         {
             StripeConfiguration.ApiKey = "sk_test_51HfSXkEFx1Ks5Nyz8wSk7nbM01l4ECbTPczxs9gmnQeqbNeKlLc7bYsP573uJ2qbQEIkJhfvFvcUIPFLYYhXQFQz00XyHNXFNe";
 
             // `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
             var options = new ChargeCreateOptions
             {
-                Amount = 2000,
+                Amount = (long)paymentAmount * 100,
                 Currency = "usd",
                 Source = "tok_visa",
                 Description = "My First Test Charge (created for API docs)",
@@ -317,7 +329,7 @@ namespace MyTrashCollector.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             // var loggedInCustomer = _context.Customers.Include(c => c.Address).FirstOrDefault(c => c.IdentityUserId == userId); - DIFFERENCE?
             var loggedInCustomer = _context.Customers.Include(c => c.Address).Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            loggedInCustomer.AccountBalance -= 20;
+            loggedInCustomer.AccountBalance -= paymentAmount;
             _context.Update(loggedInCustomer);
             await _context.SaveChangesAsync();
 
