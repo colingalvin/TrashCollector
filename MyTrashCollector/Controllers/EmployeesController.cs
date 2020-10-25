@@ -179,6 +179,11 @@ namespace MyTrashCollector.Controllers
         {
             foreach(Customer customer in _context.Customers)
             {
+                if (customer.RegularPickupDay.Equals(DateTime.Now.AddDays(-1).DayOfWeek.ToString()) || (customer.AdditionalPickupDate?.CompareTo(DateTime.Now.AddDays(-1).Date) < 0))
+                {
+                    customer.DailyPickupComplete = false;
+                    _context.Update(customer);
+                }
                 if (customer.SpecialPickupStatus)
                 {
                     if (customer.AdditionalPickupDate?.CompareTo(DateTime.Now.Date) < 0)
