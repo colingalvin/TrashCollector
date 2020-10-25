@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,6 +33,7 @@ namespace MyTrashCollector.Controllers
             {
                 return RedirectToAction("Create");
             }
+            RefreshDatabase();
             var customers = GetDailyCustomers(loggedInEmployee);
             return View("ViewDailyCustomers", customers);
         }
@@ -171,6 +173,36 @@ namespace MyTrashCollector.Controllers
                 }
             }
             return customers;
+        }
+
+        private void RefreshDatabase()
+        {
+            foreach(Customer customer in _context.Customers)
+            {
+                if (customer.SpecialPickupStatus)
+                {
+                    if (customer.AdditionalPickupDate?.CompareTo(DateTime.Now.Date) < 0)
+                    {
+                        customer.AdditionalPickupDate = null;
+                        if(customer.SuspendStartDate == null && customer.SuspendEndDate == null)
+                        {
+                            customer.SpecialPickupStatus = false;
+                        }
+                        _context.Update(customer);
+                    }
+                    if (customer.SuspendEndDate?.CompareTo(DateTime.Now.Date) <= 0)
+                    {
+                        customer.SuspendStartDate = null;
+                        customer.SuspendEndDate = null;
+                        if (customer.AdditionalPickupDate == null)
+                        {
+                            customer.SpecialPickupStatus = false;
+                        }
+                        _context.Update(customer);
+                    }
+                }
+            }
+            _context.SaveChanges();
         }
     }
 }
