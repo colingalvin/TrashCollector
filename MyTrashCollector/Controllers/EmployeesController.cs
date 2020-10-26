@@ -181,6 +181,7 @@ namespace MyTrashCollector.Controllers
             {
                 if (customer.RegularPickupDay.Equals(DateTime.Now.AddDays(-1).DayOfWeek.ToString()) || (customer.AdditionalPickupDate?.CompareTo(DateTime.Now.AddDays(-1).Date) < 0))
                 {
+                    //First condition assumes than an employee logs in at least once every day to refresh database
                     customer.DailyPickupComplete = false;
                     _context.Update(customer);
                 }
